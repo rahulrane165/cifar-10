@@ -21,7 +21,7 @@ if __name__ == "__main__":
 	"""Main function to run inference"""
 
 	class_labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-	img = load_image('airplane.jpg')
+	img = load_image('Input/airplane.jpg')
 
 	#Load model
 	model = load_model('saved_models/cifar-10_model.h5')
