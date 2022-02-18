@@ -11,5 +11,5 @@ Follow steps to execute CIFAR-10.
 1. Execute pre_processing.py
 2. Execute build_model.py
 3. Execute evaluate_model.py
-4. inference.py
+4. Execute inference.py
 
