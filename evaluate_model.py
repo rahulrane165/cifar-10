@@ -63,6 +63,13 @@ def load_data(path, negatives=False):
 
 	return (x_train_local, y_train_local), (x_test_local, y_test_local)
 
+def normalize_data(train, test):
+	train = train.astype('float32')
+	test = test.astype('float32')
+	train /= 255.0
+	test /= 255.0
+	return train, test
+
 if __name__ == "__main__":
 	"""Main function to evaluate model"""
 
@@ -76,6 +83,9 @@ if __name__ == "__main__":
 	# Convert class vectors to binary class matrices.
 	y_train = keras.utils.to_categorical(y_train, num_classes)
 	y_test = keras.utils.to_categorical(y_test, num_classes)
+
+	#Normalize the image data
+	x_test, y_test = normalize_data(x_test, y_test)
 
 	#Load model
 	model = load_model('saved_models/cifar-10_model.h5')
