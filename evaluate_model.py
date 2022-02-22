@@ -7,6 +7,10 @@ import sys
 import os
 import keras
 from keras.models import load_model
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.metrics import confusion_matrix
+import seaborn as sns; sns.set()
 
 def load_batch(path, label_key='labels'):
 	""" CIFAR-10 data.
@@ -74,6 +78,7 @@ if __name__ == "__main__":
 	"""Main function to evaluate model"""
 
 	num_classes = 10
+	labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 	#Path to directory
 	cifar_10_dir = './cifar-10-batches-py'
 
@@ -82,13 +87,29 @@ if __name__ == "__main__":
 
 	# Convert class vectors to binary class matrices.
 	y_train = keras.utils.to_categorical(y_train, num_classes)
-	y_test = keras.utils.to_categorical(y_test, num_classes)
-
+	
 	#Normalize the image data
-	x_test, y_test = normalize_data(x_test, y_test)
+	x_train, x_test = normalize_data(x_train, x_test)
 
 	#Load model
-	model = load_model('saved_models/cifar-10_model.h5')
+	model = load_model('saved_models/cifar-10_model_ep_200.h5')
+
+	#Plot confusion matrix of model
+	predictions  = model.predict(x_test)
+	predictions_for_cm = predictions.argmax(1)
+	
+	cm = confusion_matrix(y_test, predictions_for_cm)
+	
+	plt.figure(figsize=(8, 8))
+	sns.heatmap(cm, cbar=False, xticklabels=labels, yticklabels=labels, fmt='d', annot=True, cmap=plt.cm.Blues)
+	plt.xlabel('Predicted')
+	plt.ylabel('Actual')
+	
+	plt.savefig('confusion_matrix' + '_plot.png')
+	plt.close()
+
+	# Convert class vectors to binary class matrices.
+	y_test = keras.utils.to_categorical(y_test, num_classes)
 
 	#Evaluate model on test dataset
 	_, acc = model.evaluate(x_test, y_test, verbose=0)
