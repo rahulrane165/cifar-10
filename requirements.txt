@@ -3,3 +3,5 @@ matplotlib==3.4.2
 six==1.16.0
 tensorflow==2.4.1
 keras==2.4.3
+scikit-learn
+seaborn
